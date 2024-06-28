@@ -4,13 +4,13 @@ using System.Linq;
 using System.Threading.Tasks;
 using Mapster;
 using Microsoft.AspNetCore.SignalR;
-using SignalRAssignment.BusinessLogic.BusinessModels;
 using SignalRAssignment.BusinessLogic.Hubs;
 using SignalRAssignment.BusinessLogic.Interfaces;
-using SignalRAssignment.BusinessLogic.RequestModels;
 using SignalRAssignment.DataAccess.Entities;
 using SignalRAssignment.DataAccess.Interfaces;
+using SignalRAssignment.Shared.BusinessModels;
 using SignalRAssignment.Shared.Exceptions;
+using SignalRAssignment.Shared.RequestModels;
 
 namespace SignalRAssignment.BusinessLogic.Services
 {
@@ -69,9 +69,9 @@ namespace SignalRAssignment.BusinessLogic.Services
             return post.Adapt<PostDetailsModel>();
         }
 
-        public async Task<List<PostModel>> GetPosts(string keyword = "")
+        public async Task<PagedResultModel<PostModel>> GetPagedPosts(QueryPagedPostRequest request)
         {
-            return (await _unitOfWork.PostRepository.GetPosts(keyword)).Adapt<List<PostModel>>();
+            return (await _unitOfWork.PostRepository.GetPagedPosts(request)).Adapt<PagedResultModel<PostModel>>();
         }
 
         public async Task UpdatePost(int postId, UpdatePostRequest request)

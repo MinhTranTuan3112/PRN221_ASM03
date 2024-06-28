@@ -1,28 +1,31 @@
 using System;
 using System.Collections.Generic;
-using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
-using SignalRAssignment.DataAccess.Enums;
 
-namespace SignalRAssignment.BusinessLogic.RequestModels
+namespace SignalRAssignment.Shared.BusinessModels
 {
-    public class CreatePostRequest
+    public class PostDetailsModel
     {
-        [Required]
+        public int PostID { get; set; }
+
         public int AuthorID { get; set; }
 
-        [Required]
+        public DateTime CreatedDate { get; set; }
+
+        public DateTime? UpdatedDate { get; set; }
+
         public required string Title { get; set; }
 
-        [Required]
         public required string Content { get; set; }
 
-        [Required]
-        [EnumDataType(typeof(PostPublishStatus))]
         public required string PublishStatus { get; set; } //Based on PostPublishStatus Enum
 
-        [Required]
         public int CategoryID { get; set; }
+
+        //Navigators
+        public AppUserModel AppUser { get; set; } = null!;
+
+        public PostCategoryModel PostCategory { get; set; } = null!;
     }
 }

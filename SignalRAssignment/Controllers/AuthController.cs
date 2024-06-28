@@ -26,22 +26,13 @@ namespace SignalRAssignment.Controllers
         public async Task<IActionResult> SignIn(IFormCollection form)
         {
 
-            try
-            {
-                string email = form["email"]!;
-                string password = form["password"]!;
-                var appUser = await _serviceFactory.AppUserService.SignIn(email, password);
-                HttpContext.Session.SetString("userId", appUser.UserID.ToString());
+            string email = form["email"]!;
+            string password = form["password"]!;
+            var appUser = await _serviceFactory.AppUserService.SignIn(email, password);
+            HttpContext.Session.SetString("userId", appUser.UserID.ToString());
 
-                return RedirectToAction("Index", "Posts");
-
-            }
-            catch (Exception ex)
-            {
-
-                ViewBag.Message = ex.Message;
-                return View("~/Views/Login.cshtml");
-            }
+            return RedirectToAction("Index", "Posts");
+            
         }
 
         [HttpGet("signout")]

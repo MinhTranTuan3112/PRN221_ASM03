@@ -35,19 +35,28 @@ namespace SignalRAssignment.Middlewares
         {
 
             int statusCode = (int)HttpStatusCode.InternalServerError;
-            
+            string encodedMessage = Uri.EscapeDataString(ex.Message);
+            string redirectPath = $"/CustomError?message={encodedMessage}&statusCode={statusCode}";
+
             switch (ex)
             {
                 case NotFoundException _:
                     statusCode = (int)HttpStatusCode.NotFound;
+                    break;
+                case ForbiddenMethodException _:
+                    statusCode = (int)HttpStatusCode.Forbidden;
+                    redirectPath = $"/Home/Login?message={encodedMessage}";
+                    break;
+                case UnauthorizedException _:
+                    statusCode = (int)HttpStatusCode.Unauthorized;
+                    redirectPath = $"/Home/Login?message={encodedMessage}";
                     break;
                 default:
                     break;
             }
 
             httpContext.Response.StatusCode = statusCode;
-            string encodedMessage = Uri.EscapeDataString(ex.Message);
-            httpContext.Response.Redirect($"/CustomError?message={encodedMessage}&statusCode={statusCode}");
+            httpContext.Response.Redirect(redirectPath);
         }
     }
 }

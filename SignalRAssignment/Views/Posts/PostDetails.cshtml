@@ -1,10 +1,13 @@
-@using SignalRAssignment.DataAccess.Enums;
+@using SignalRAssignment.Shared.Enums
 @model PostDetailPageResponse;
 @{
     ViewData["Title"] = "Post Details";
     var publishStatuses = Enum.GetValues(typeof(PostPublishStatus))
     .Cast<PostPublishStatus>()
     .Select(p => p.ToString());
+
+    var userId = Context.Session.GetString("userId");
+    bool isAuthorized = userId is not null && Convert.ToInt32(userId) == Model.Post?.AuthorID;
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -18,41 +21,42 @@
     <form action="/Posts/@Model.Post?.PostID" method="post">
         <input type="hidden" name="action" value="@Model.Action" />
 
-        <p>By</p>
-        <select name="author" id="author" class="form-select mb-3" required>
-            <option>Select author</option>
+        <p>By <span class="fw-bold">@Model?.Post?.AppUser.Fullname</span></p>
+        @* <select name="author" id="author" class="form-select mb-3" required>
+        <option>Select author</option>
 
-            @foreach (var user in Model.AppUsers)
-            {
-                @if (Model.Post?.AuthorID == user.UserID)
-                {
-                    <option value="@user.UserID" selected>@user.Fullname</option>
-                }
-                else
-                {
-                    <option value="@user.UserID">@user.Fullname</option>
-                }
-            }
-        </select>
+        @foreach (var user in Model.AppUsers)
+        {
+        @if (Model.Post?.AuthorID == user.UserID)
+        {
+        <option value="@user.UserID" selected>@user.Fullname</option>
+        }
+        else
+        {
+        <option value="@user.UserID">@user.Fullname</option>
+        }
+        }
+        </select> *@
 
         <div class="form-floating mb-3">
-            <input type="text" class="form-control" value="@Model.Post?.Title" name="title" id="title"
-                placeholder="Title" required>
+            <input type="text" class="form-control" value="@Model?.Post?.Title" name="title" id="title"
+                placeholder="Title" readonly=@(isAuthorized ? "true": "") required />
             <label for="title">Title</label>
         </div>
 
         <div class="form-floating mb-3">
-            <textarea class="form-control" name="content" placeholder="Content" id="content"
-                required>@Model.Post?.Content</textarea>
+            <textarea class="form-control" name="content" placeholder="Content" id="content" style="height: 100px"
+                readonly=@(isAuthorized ? "true": "") required>@Model?.Post?.Content</textarea>
             <label for="content">Content</label>
         </div>
 
-        <select class="form-select mb-3" name="publishStatus" id="publishStatus" required>
+        <select class="form-select mb-3" name="publishStatus" id="publishStatus" readonly=@(isAuthorized ? "true": "")
+            required>
             <option>Select publish status</option>
 
             @foreach (var status in publishStatuses)
             {
-                if (Model.Post?.PublishStatus == status)
+                if (Model?.Post?.PublishStatus == status)
                 {
                     <option value="@status" selected>@status</option>
                 }
@@ -65,10 +69,10 @@
         </select>
 
         <p>With category:</p>
-        <select name="category" id="category" class="form-select mb-3" required>
+        <select name="category" id="category" class="form-select mb-3" readonly=@(isAuthorized ? "true": "") required>
             <option>Select category</option>
 
-            @foreach (var category in Model.PostCategories)
+            @foreach (var category in Model?.PostCategories!)
             {
                 if (Model.Post?.CategoryID == category.CategoryID)
                 {
@@ -83,6 +87,6 @@
         </select>
 
 
-        <button class="btn btn-primary" type="submit">Save</button>
+        <button class="btn btn-primary" disabled=@(isAuthorized ? "true": "") type="submit">Save</button>
     </form>
 </div>

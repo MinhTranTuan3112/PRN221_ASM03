@@ -1,4 +1,4 @@
-namespace SignalRAssignment.DataAccess.Enums
+namespace SignalRAssignment.Shared.Enums
 {
     public enum PostPublishStatus
     {

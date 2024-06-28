@@ -1,4 +1,4 @@
-@model List<PostModel>
+@model PagedResultModel<PostModel>
 
 @{
     ViewData["Title"] = "Posts";
@@ -42,7 +42,7 @@
         <button class="btn btn-primary" type="submit">Search</button>
     </form>
 
-    @if (Model is [])
+    @if (Model.Items is [])
     {
         <p class="text-center">No posts found.</p>
     }
@@ -50,7 +50,7 @@
     {
         <table class="table table-hover">
             <thead>
-                @foreach (var property in Model.FirstOrDefault()?.GetType().GetProperties()!)
+                @foreach (var property in Model.Items.FirstOrDefault()?.GetType().GetProperties()!)
                 {
                     <th>@property.Name</th>
                 }
@@ -59,7 +59,7 @@
             </thead>
 
             <tbody class="posts_table_body">
-                @foreach (var post in Model)
+                @foreach (var post in Model.Items)
                 {
                     <tr>
                         @foreach (var property in post.GetType().GetProperties()!)

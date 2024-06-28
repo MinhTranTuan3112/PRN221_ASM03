@@ -4,7 +4,10 @@ using System.Linq;
 using System.Threading.Tasks;
 using Microsoft.EntityFrameworkCore;
 using SignalRAssignment.DataAccess.Entities;
+using SignalRAssignment.DataAccess.Extensions;
 using SignalRAssignment.DataAccess.Interfaces;
+using SignalRAssignment.Shared.BusinessModels;
+using SignalRAssignment.Shared.RequestModels;
 
 namespace SignalRAssignment.DataAccess.Repositories
 {
@@ -24,9 +27,14 @@ namespace SignalRAssignment.DataAccess.Repositories
                                     .SingleOrDefaultAsync(p => p.PostID == id);
         }
 
-        public async Task<List<Post>> GetPosts(string keyword = "")
+        public async Task<PagedResultModel<Post>> GetPagedPosts(QueryPagedPostRequest request)
         {
-            var query = _context.Posts.AsQueryable();
+            var query = _context.Posts.AsNoTracking()
+                                    .Include(p => p.AppUser)
+                                    .Include(p => p.PostCategory)
+                                    .AsQueryable();
+
+            string keyword = request.Keyword;
 
             if (!string.IsNullOrEmpty(keyword))
             {
@@ -34,7 +42,7 @@ namespace SignalRAssignment.DataAccess.Repositories
                         || p.Content.ToLower().Contains(keyword.ToLower()));
             }
 
-            return await query.ToListAsync();
+            return await query.ToPagedResultModelAsync(request.Page, request.PageSize);
         }
     }
 }

@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using Mapster;
 using Microsoft.Extensions.DependencyInjection;
 using SignalRAssignment.BusinessLogic.Interfaces;
-using SignalRAssignment.BusinessLogic.RequestModels;
 using SignalRAssignment.BusinessLogic.Services;
 using SignalRAssignment.DataAccess.Entities;
+using SignalRAssignment.Shared.RequestModels;
 
 namespace SignalRAssignment.BusinessLogic.Extensions
 {

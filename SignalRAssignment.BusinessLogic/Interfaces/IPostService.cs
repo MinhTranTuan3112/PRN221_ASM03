@@ -2,14 +2,15 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using SignalRAssignment.BusinessLogic.BusinessModels;
-using SignalRAssignment.BusinessLogic.RequestModels;
+using SignalRAssignment.DataAccess.Entities;
+using SignalRAssignment.Shared.BusinessModels;
+using SignalRAssignment.Shared.RequestModels;
 
 namespace SignalRAssignment.BusinessLogic.Interfaces
 {
     public interface IPostService
     {
-        Task<List<PostModel>> GetPosts(string keyword = "");
+        Task<PagedResultModel<PostModel>> GetPagedPosts(QueryPagedPostRequest request);
 
         Task<PostDetailsModel> GetPostDetailsById(int postId); 
 

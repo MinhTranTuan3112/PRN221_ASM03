@@ -7,9 +7,9 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SignalRAssignment.Attributes;
 using SignalRAssignment.BusinessLogic.Interfaces;
-using SignalRAssignment.BusinessLogic.RequestModels;
 using SignalRAssignment.DataAccess.Entities;
 using SignalRAssignment.ResponseModels;
+using SignalRAssignment.Shared.RequestModels;
 
 namespace SignalRAssignment.Controllers
 {
@@ -27,13 +27,13 @@ namespace SignalRAssignment.Controllers
         }
 
         [HttpGet]
-        public async Task<IActionResult> Index(string keyword = "")
+        public async Task<IActionResult> Index([FromQuery] QueryPagedPostRequest request)
         {
-            var posts = await _serviceFactory.PostService.GetPosts(keyword);
+            var pagedResult = await _serviceFactory.PostService.GetPagedPosts(request);
 
-            ViewBag.keyword = keyword;
+            ViewBag.keyword = request.Keyword;
 
-            return View("~/Views/Posts/Index.cshtml", posts);
+            return View("~/Views/Posts/Index.cshtml", pagedResult);
         }
 
         [HttpGet("create")]
@@ -42,13 +42,11 @@ namespace SignalRAssignment.Controllers
         {
             var categories = await _serviceFactory.PostCategoryService.GetCategories();
 
-            var appUsers = await _serviceFactory.AppUserService.GetAppUsers();
-
             return View("~/Views/Posts/PostDetails.cshtml", new PostDetailPageResponse
             {
                 Action = "Create",
                 PostCategories = categories,
-                AppUsers = appUsers
+              
             });
         }
 
@@ -59,13 +57,10 @@ namespace SignalRAssignment.Controllers
 
             var categories = await _serviceFactory.PostCategoryService.GetCategories();
 
-            var appUsers = await _serviceFactory.AppUserService.GetAppUsers();
-
             return View("~/Views/Posts/PostDetails.cshtml", new PostDetailPageResponse
             {
                 Post = post,
                 PostCategories = categories,
-                AppUsers = appUsers,
                 Action = "Update"
             });
         }
@@ -84,7 +79,7 @@ namespace SignalRAssignment.Controllers
                     Content = form["content"]!,
                     PublishStatus = form["publishStatus"]!,
                     CategoryID = Convert.ToInt32(form["category"]),
-                    AuthorID = Convert.ToInt32(form["author"]!)
+                    AuthorID = Convert.ToInt32(HttpContext.Session.GetString("userId"))
                 });
 
                 ViewBag.Message = "Post updated successfully";
@@ -99,7 +94,7 @@ namespace SignalRAssignment.Controllers
                 Content = form["content"]!,
                 PublishStatus = form["publishStatus"]!,
                 CategoryID = Convert.ToInt32(form["category"]),
-                AuthorID = Convert.ToInt32(form["author"]!)
+                AuthorID = Convert.ToInt32(HttpContext.Session.GetString("userId"))
             });
 
             ViewBag.Message = "Created new post successfully";

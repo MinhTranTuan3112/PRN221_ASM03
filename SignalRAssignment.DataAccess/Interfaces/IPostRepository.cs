@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using SignalRAssignment.DataAccess.Entities;
+using SignalRAssignment.Shared.BusinessModels;
+using SignalRAssignment.Shared.RequestModels;
 
 namespace SignalRAssignment.DataAccess.Interfaces
 {
@@ -10,6 +12,6 @@ namespace SignalRAssignment.DataAccess.Interfaces
     {
         Task<Post?> GetPostDetailsById(int id);
 
-        Task<List<Post>> GetPosts(string keyword = "");
+        Task<PagedResultModel<Post>> GetPagedPosts(QueryPagedPostRequest request);
     }
 }

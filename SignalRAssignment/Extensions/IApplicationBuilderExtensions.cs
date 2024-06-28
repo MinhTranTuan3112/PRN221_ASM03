@@ -11,10 +11,10 @@ namespace SignalRAssignment.Extensions
     {
         public static WebApplication MapCustomEndpoints(this WebApplication app)
         {
-            app.MapGet("/api/posts", async (IPostService _postService) =>
-            {
-                return await _postService.GetPosts();
-            });
+            // app.MapGet("/api/posts", async (IPostService _postService) =>
+            // {
+            //     return await _postService.GetPosts();
+            // });
             
             return app;
         }

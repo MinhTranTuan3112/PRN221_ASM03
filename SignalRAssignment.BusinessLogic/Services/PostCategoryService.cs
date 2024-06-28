@@ -3,9 +3,9 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using Mapster;
-using SignalRAssignment.BusinessLogic.BusinessModels;
 using SignalRAssignment.BusinessLogic.Interfaces;
 using SignalRAssignment.DataAccess.Interfaces;
+using SignalRAssignment.Shared.BusinessModels;
 
 namespace SignalRAssignment.BusinessLogic.Services
 {
