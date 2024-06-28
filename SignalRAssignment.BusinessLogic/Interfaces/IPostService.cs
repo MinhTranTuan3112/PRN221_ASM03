@@ -10,7 +10,7 @@ namespace SignalRAssignment.BusinessLogic.Interfaces
 {
     public interface IPostService
     {
-        Task<PagedResultModel<PostModel>> GetPagedPosts(QueryPagedPostRequest request);
+        Task<PagedResultModel<PostDetailsModel>> GetPagedPosts(QueryPagedPostRequest request);
 
         Task<PostDetailsModel> GetPostDetailsById(int postId); 
 

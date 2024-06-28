@@ -7,7 +7,8 @@
     .Select(p => p.ToString());
 
     var userId = Context.Session.GetString("userId");
-    bool isAuthorized = userId is not null && Convert.ToInt32(userId) == Model.Post?.AuthorID;
+    bool isAuthorized = Model.Action.ToLower() is "create" || (userId is not null && Convert.ToInt32(userId) ==
+    Model.Post?.AuthorID);
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -18,7 +19,8 @@
         <p class="mb-2">@ViewBag.Message</p>
     }
 
-    <form action="/Posts/@Model.Post?.PostID" method="post">
+    <form action=@(Model.Action.ToLower() is "update" ? $"/posts/{Model.Post?.PostID}" : "/posts/create-new-post")
+        method="post">
         <input type="hidden" name="action" value="@Model.Action" />
 
         <p>By <span class="fw-bold">@Model?.Post?.AppUser.Fullname</span></p>
@@ -40,17 +42,17 @@
 
         <div class="form-floating mb-3">
             <input type="text" class="form-control" value="@Model?.Post?.Title" name="title" id="title"
-                placeholder="Title" readonly=@(isAuthorized ? "true": "") required />
+                placeholder="Title" @(isAuthorized ? "" : "readonly") required />
             <label for="title">Title</label>
         </div>
 
         <div class="form-floating mb-3">
             <textarea class="form-control" name="content" placeholder="Content" id="content" style="height: 100px"
-                readonly=@(isAuthorized ? "true": "") required>@Model?.Post?.Content</textarea>
+            @(isAuthorized ? "" : "readonly") required>@Model?.Post?.Content</textarea>
             <label for="content">Content</label>
         </div>
 
-        <select class="form-select mb-3" name="publishStatus" id="publishStatus" readonly=@(isAuthorized ? "true": "")
+        <select class="form-select mb-3" name="publishStatus" id="publishStatus" @(isAuthorized ? "" : "disabled")
             required>
             <option>Select publish status</option>
 
@@ -69,7 +71,7 @@
         </select>
 
         <p>With category:</p>
-        <select name="category" id="category" class="form-select mb-3" readonly=@(isAuthorized ? "true": "") required>
+        <select name="category" id="category" class="form-select mb-3" @(isAuthorized ? "" : "disabled") required>
             <option>Select category</option>
 
             @foreach (var category in Model?.PostCategories!)
@@ -87,6 +89,6 @@
         </select>
 
 
-        <button class="btn btn-primary" disabled=@(isAuthorized ? "true": "") type="submit">Save</button>
+        <button class="btn btn-primary" @(isAuthorized ? "" : "disabled") type="submit">Save</button>
     </form>
 </div>

@@ -69,9 +69,9 @@ namespace SignalRAssignment.BusinessLogic.Services
             return post.Adapt<PostDetailsModel>();
         }
 
-        public async Task<PagedResultModel<PostModel>> GetPagedPosts(QueryPagedPostRequest request)
+        public async Task<PagedResultModel<PostDetailsModel>> GetPagedPosts(QueryPagedPostRequest request)
         {
-            return (await _unitOfWork.PostRepository.GetPagedPosts(request)).Adapt<PagedResultModel<PostModel>>();
+            return (await _unitOfWork.PostRepository.GetPagedPosts(request)).Adapt<PagedResultModel<PostDetailsModel>>();
         }
 
         public async Task UpdatePost(int postId, UpdatePostRequest request)

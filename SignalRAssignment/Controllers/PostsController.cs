@@ -46,7 +46,6 @@ namespace SignalRAssignment.Controllers
             {
                 Action = "Create",
                 PostCategories = categories,
-              
             });
         }
 
@@ -65,29 +64,16 @@ namespace SignalRAssignment.Controllers
             });
         }
 
-        [HttpPost("{id}")]
+        [HttpPost("create-new-post")]
         [SessionAuthorize]
-        public async Task<IActionResult> Upsert([FromRoute] int id, [FromForm] IFormCollection form)
+        public async Task<IActionResult> CreateNewPost(IFormCollection form)
         {
             string action = form["action"]!;
-
-            if (action.ToLower() is "update")
+            if (action.ToLower() is not "create")
             {
-                await _serviceFactory.PostService.UpdatePost(id, new UpdatePostRequest
-                {
-                    Title = form["title"]!,
-                    Content = form["content"]!,
-                    PublishStatus = form["publishStatus"]!,
-                    CategoryID = Convert.ToInt32(form["category"]),
-                    AuthorID = Convert.ToInt32(HttpContext.Session.GetString("userId"))
-                });
-
-                ViewBag.Message = "Post updated successfully";
-
-                return RedirectToAction("Details", "Posts", new { id });
-
+                return RedirectToAction("Index", "Posts");
             }
-
+        
             int postId = await _serviceFactory.PostService.CreatePost(new CreatePostRequest
             {
                 Title = form["title"]!,
@@ -100,6 +86,33 @@ namespace SignalRAssignment.Controllers
             ViewBag.Message = "Created new post successfully";
 
             return RedirectToAction("Details", "Posts", new { id = postId });
+
+
+        }
+
+        [HttpPost("{id}")]
+        [SessionAuthorize]
+        public async Task<IActionResult> UpdatePost([FromRoute] int id, [FromForm] IFormCollection form)
+        {
+            string action = form["action"]!;
+
+            if (action.ToLower() is not "update")
+            {
+                return RedirectToAction("Index", "Posts");
+            }
+
+            await _serviceFactory.PostService.UpdatePost(id, new UpdatePostRequest
+            {
+                Title = form["title"]!,
+                Content = form["content"]!,
+                PublishStatus = form["publishStatus"]!,
+                CategoryID = Convert.ToInt32(form["category"]),
+                AuthorID = Convert.ToInt32(HttpContext.Session.GetString("userId"))
+            });
+
+            ViewBag.Message = "Post updated successfully";
+
+            return RedirectToAction("Details", "Posts", new { id });
 
         }
 

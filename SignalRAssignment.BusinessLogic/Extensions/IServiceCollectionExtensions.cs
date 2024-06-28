@@ -26,6 +26,7 @@ namespace SignalRAssignment.BusinessLogic.Extensions
         private static IServiceCollection AddMapsterConfigurations(this IServiceCollection services)
         {
             TypeAdapterConfig<UpdatePostRequest, Post>.NewConfig().IgnoreNullValues(true);
+            TypeAdapterConfig<UpdateAppUserRequest, AppUser>.NewConfig().IgnoreNullValues(true);
             return services;
         }
     }

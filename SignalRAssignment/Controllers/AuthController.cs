@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using SignalRAssignment.BusinessLogic.Interfaces;
+using SignalRAssignment.Shared.RequestModels;
 
 namespace SignalRAssignment.Controllers
 {
@@ -32,7 +33,26 @@ namespace SignalRAssignment.Controllers
             HttpContext.Session.SetString("userId", appUser.UserID.ToString());
 
             return RedirectToAction("Index", "Posts");
-            
+
+        }
+
+        [HttpPost("signup")]
+        public async Task<IActionResult> SignUp(IFormCollection form)
+        {
+            string email = form["email"]!;
+            string password = form["password"]!;
+            string fullName = form["fullName"]!;
+            var address = form["address"];
+
+            await _serviceFactory.AppUserService.SignUp(new SignUpRequest
+            {
+                Email = email,
+                Password = password,
+                FullName = fullName,
+                Address = address
+            });
+
+            return RedirectToAction("Login", "Home", new { message = "Please login to join our posts community!" });
         }
 
         [HttpGet("signout")]

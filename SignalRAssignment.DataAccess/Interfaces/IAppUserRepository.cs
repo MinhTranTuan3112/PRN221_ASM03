@@ -8,6 +8,6 @@ namespace SignalRAssignment.DataAccess.Interfaces
 {
     public interface IAppUserRepository : IGenericRepository<AppUser>
     {
-
+        Task<AppUser?> GetAppUserDetailsById(int id);
     }
 }

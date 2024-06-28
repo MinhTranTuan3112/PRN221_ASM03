@@ -31,9 +31,9 @@ const refreshPosts = async (postId) => {
         postIdCell.textContent = post.postID;
         row.appendChild(postIdCell);
 
-        const authorIdCell = document.createElement("td");
-        authorIdCell.textContent = post.authorID;
-        row.appendChild(authorIdCell);
+        const authorCell = document.createElement("td");
+        authorCell.textContent = post.appUser.fullName;
+        row.appendChild(authorCell);
 
         const createdDateCell = document.createElement("td");
         createdDateCell.textContent = post.createdDate.toString();
@@ -55,9 +55,9 @@ const refreshPosts = async (postId) => {
         publishStatusCell.textContent = post.publishStatus;
         row.appendChild(publishStatusCell);
 
-        const categoryIDCell = document.createElement("td");
-        categoryIDCell.textContent = post.categoryID;
-        row.appendChild(categoryIDCell);
+        const categoryCell = document.createElement("td");
+        categoryCell.textContent = post.postCategory.categoryName;
+        row.appendChild(categoryCell);
 
         const detailsCell = document.createElement("td");
         const detailsButton = document.createElement("button");

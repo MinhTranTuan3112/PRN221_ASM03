@@ -24,6 +24,12 @@ namespace SignalRAssignment.Controllers
             return View("~/Views/Login.cshtml");
         }
 
+        public IActionResult Register(string message = "")
+        {
+            ViewBag.Message = message;
+            return View("");
+        }
+
         public IActionResult Privacy()
         {
             return View();

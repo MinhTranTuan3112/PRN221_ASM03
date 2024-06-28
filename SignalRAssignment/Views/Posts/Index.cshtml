@@ -1,4 +1,4 @@
-@model PagedResultModel<PostModel>
+@model PagedResultModel<PostDetailsModel>
 
 @{
     ViewData["Title"] = "Posts";
@@ -46,6 +46,9 @@
         <button class="btn btn-primary" type="submit">Search</button>
     </form>
 
+    <div class="" style="display: flex;justify-content: flex-end;"><button class="btn btn-secondary" type="button" style="margin-block: 20px;"
+            onclick="location.href='/Posts/Create'">Create</button></div>
+
     @if (Model.Items is [])
     {
         <p class="text-center">No posts found.</p>
@@ -54,10 +57,15 @@
     {
         <table class="table table-hover">
             <thead>
-                @foreach (var property in Model.Items.FirstOrDefault()?.GetType().GetProperties()!)
-                {
-                    <th>@property.Name</th>
-                }
+                <th>Post Id</th>
+                <th>Author</th>
+                <th>Created Date</th>
+                <th>Updated Date</th>
+                <th>Title</th>
+                <th>Content</th>
+                <th>Publish Status</th>
+                <th>Category</th>
+
                 <th></th>
                 <th></th>
             </thead>
@@ -66,10 +74,15 @@
                 @foreach (var post in Model.Items)
                 {
                     <tr>
-                        @foreach (var property in post.GetType().GetProperties()!)
-                        {
-                            <td style="text-align: justify;">@property.GetValue(post)</td>
-                        }
+                        <td>@post.PostID</td>
+                        <td>@post.AppUser.Fullname</td>
+                        <td>@post.CreatedDate</td>
+                        <td>@post.UpdatedDate</td>
+                        <td>@post.Title</td>
+                        <td>@post.Content</td>
+                        <td>@post.PublishStatus</td>
+                        <td>@post.PostCategory.CategoryName</td>
+
                         <td>
                             <button class="btn btn-primary" onclick="location.href='/Posts/@post.PostID'">Details</button>
                         </td>

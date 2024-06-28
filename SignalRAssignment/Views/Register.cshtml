@@ -1,0 +1,42 @@
+@{
+    ViewData["Title"] = "Register";
+}
+
+<h1>@ViewData["Title"]</h1>
+
+<div>
+
+    @if (!string.IsNullOrEmpty(ViewBag.Message))
+    {
+        <div class="alert alert-danger" role="alert">
+            @ViewBag.Message
+        </div>
+    }
+
+    <form action="/auth/signup" method="post" style="width: 35%;">
+        <h1 class="h3 mb-3 fw-bold">Sign Up</h1>
+
+        <div class="form-floating mb-3">
+            <input type="email" class="form-control" name="email" id="email" placeholder="name@example.com" required />
+            <label for="email">Email</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="password" class="form-control" name="password" id="password" placeholder="Password" required />
+            <label for="password">Password</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" name="fullName" id="fullName" placeholder="FullName" required />
+            <label for="fullName">Full Name</label>
+        </div>
+
+        <div class="form-floating mb-3">
+            <input type="text" class="form-control" name="address" id="address" placeholder="Address" />
+            <label for="address">Address</label>
+        </div>
+
+        <button class="btn btn-primary w-100 py-2" type="submit">Sign In</button>
+    </form>
+
+</div>
