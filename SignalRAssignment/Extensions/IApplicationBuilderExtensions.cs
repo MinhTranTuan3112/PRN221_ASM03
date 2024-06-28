@@ -2,8 +2,10 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
 using SignalRAssignment.BusinessLogic.Hubs;
 using SignalRAssignment.BusinessLogic.Interfaces;
+using SignalRAssignment.Shared.RequestModels;
 
 namespace SignalRAssignment.Extensions
 {
@@ -11,11 +13,17 @@ namespace SignalRAssignment.Extensions
     {
         public static WebApplication MapCustomEndpoints(this WebApplication app)
         {
-            // app.MapGet("/api/posts", async (IPostService _postService) =>
-            // {
-            //     return await _postService.GetPosts();
-            // });
-            
+            app.MapGet("/api/posts", async (IPostService _postService,
+                        int page = 1, int pageSize = 10, string keyword = "") =>
+            {
+                return await _postService.GetPagedPosts(new QueryPagedPostRequest
+                {
+                    Page = page,
+                    PageSize = pageSize,
+                    Keyword = keyword
+                });
+            });
+
             return app;
         }
 

@@ -2,6 +2,10 @@
 
 @{
     ViewData["Title"] = "Posts";
+    int pageNumber = Model.PageNumber;
+    int pageSize = Model.PageSize;
+
+    string actionPath = $@"/Posts?page={pageNumber}&pageSize={pageSize}";
 }
 
 <h1>@ViewData["Title"]</h1>
@@ -23,15 +27,15 @@
     </svg>
     <div class="noti">
         @* <div class="alert alert-primary d-flex align-items-center" role="alert">
-            <svg height="20" width="20" class="bi flex-shrink-0 me-2" role="img" aria-label="Info:">
-                <use xlink:href="#info-fill" />
-            </svg>
-            <div>
-                New Post!!!!
-            </div>
+        <svg height="20" width="20" class="bi flex-shrink-0 me-2" role="img" aria-label="Info:">
+        <use xlink:href="#info-fill" />
+        </svg>
+        <div>
+        New Post!!!!
+        </div>
         </div> *@
     </div>
-    <form action="/Posts" class="input-group mb-3" method="get">
+    <form action="@actionPath" class="input-group mb-3" method="get">
         <span class="input-group-text" id="inputGroup-sizing-default"><svg xmlns="http://www.w3.org/2000/svg" width="16"
                 height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
                 <path
@@ -77,6 +81,30 @@
             </tbody>
         </table>
     }
+
+    <nav aria-label="Page navigation example" style="margin-top: 50px;">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            @for (int pageCnt = 1; pageCnt <= Model.TotalPages; ++pageCnt)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="/Posts?page=@pageCnt&keyword=@ViewBag.keyword">@pageCnt</a>
+                </li>
+            }
+            @* <li class="page-item"><a class="page-link" href="">1</a></li>
+            <li class="page-item"><a class="page-link" href="">2</a></li>
+            <li class="page-item"><a class="page-link" href="">3</a></li> *@
+            <li class="page-item">
+                <a class="page-link" href="" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
 
 </div>
 

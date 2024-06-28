@@ -18,7 +18,9 @@ const refreshPosts = async (postId) => {
         throw new Error(message);
     }
 
-    const posts = await response.json();
+    const data = await response.json();
+    
+    const posts = data.items;
 
     console.log({ posts });
 
