@@ -1,0 +1,8 @@
+@model CustomErrorPageResponse 
+@{
+    ViewData["Title"] = "Error";
+}
+
+
+<h1 class="text-danger">An error occurred: @Model.Message</h1>
+<h2>Status code: @Model.StatusCode</h2>
