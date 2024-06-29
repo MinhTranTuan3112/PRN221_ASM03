@@ -75,5 +75,10 @@ namespace SignalRAssignment.BusinessLogic.Services
             request.Adapt(appUser);
             await _unitOfWork.SaveChangesAsync();
         }
+
+        public async Task<PagedResultModel<AppUserModel>> GetPagedAppUsers(QueryPagedAppUsersRequest request)
+        {
+            return (await _unitOfWork.AppUserRepository.GetPagedAppUsers(request)).Adapt<PagedResultModel<AppUserModel>>();
+        }
     }
 }

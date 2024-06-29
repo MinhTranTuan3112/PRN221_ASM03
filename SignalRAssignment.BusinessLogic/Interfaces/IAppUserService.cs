@@ -12,6 +12,8 @@ namespace SignalRAssignment.BusinessLogic.Interfaces
     {
         Task<List<AppUserModel>> GetAppUsers();
 
+        Task<PagedResultModel<AppUserModel>> GetPagedAppUsers(QueryPagedAppUsersRequest request);
+
         Task<AppUserModel> SignIn(string email, string password); 
 
         Task SignUp(SignUpRequest request);

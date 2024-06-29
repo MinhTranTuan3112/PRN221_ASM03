@@ -42,11 +42,17 @@ namespace SignalRAssignment.BusinessLogic.Services
             return post.PostID;
         }
 
-        public async Task DeletePost(int postId)
+        public async Task DeletePost(int userId, int postId)
         {
-            if (!await _unitOfWork.PostRepository.AnyAsync(p => p.PostID == postId))
+            var post = await _unitOfWork.PostRepository.FindOneAsync(p => p.PostID == postId);
+            if (post is null)
             {
                 throw new NotFoundException("Post not found");
+            }
+
+            if (post.AuthorID != userId)
+            {
+                throw new ForbiddenMethodException("You are not authorized to delete this post");
             }
 
             await _unitOfWork.PostRepository.ExecuteDeleteAsync(p => p.PostID == postId);

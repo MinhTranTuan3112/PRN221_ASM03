@@ -21,6 +21,8 @@ namespace SignalRAssignment.Attributes
                 // context.Result = new RedirectToActionResult("Login", "Home", null);
                 throw new ForbiddenMethodException("You are not allowed to access this resource!");
             }
+
+            
         }
     }
 }

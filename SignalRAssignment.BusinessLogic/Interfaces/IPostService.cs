@@ -18,7 +18,7 @@ namespace SignalRAssignment.BusinessLogic.Interfaces
 
         Task<int> CreatePost(CreatePostRequest request);
 
-        Task DeletePost(int postId);
+        Task DeletePost(int userId, int postId);
         
     }
 }

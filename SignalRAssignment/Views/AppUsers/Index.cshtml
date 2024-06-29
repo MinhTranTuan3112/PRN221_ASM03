@@ -1,0 +1,79 @@
+@model PagedResultModel<AppUserModel>
+@{
+    ViewData["Title"] = "Members";
+    int pageNumber = Model.PageNumber;
+    int pageSize = Model.PageSize;
+
+    string actionPath = $@"/appUsers?page={pageNumber}&pageSize={pageSize}";
+}
+
+<h1 class="mb-4">@ViewData["Title"]</h1>
+
+<div>
+    <form action="@actionPath" class="input-group mb-3" method="get">
+        <span class="input-group-text" id="inputGroup-sizing-default"><svg xmlns="http://www.w3.org/2000/svg" width="16"
+                height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16">
+                <path
+                    d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001q.044.06.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1 1 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0" />
+            </svg></span>
+        <input type="text" value="@ViewBag.keyword" name="keyword" placeholder="Enter member email"
+            class="form-control" />
+        <button class="btn btn-primary" type="submit">Search</button>
+    </form>
+
+    <table class="table table-hover">
+        <thead>
+            <th>Id</th>
+            <th>Fullname</th>
+            <th>Email</th>
+            <th>Password</th>
+            <th></th>
+            <th></th>
+        </thead>
+        <tbody>
+            @if (Model.Items is [])
+            {
+                <p class="text-center">No users found.</p>
+            }
+            else
+            {
+                @foreach (var appUser in Model.Items)
+                {
+                    <tr>
+                        <td>@appUser.UserID</td>
+                        <td>@appUser.Fullname</td>
+                        <td>@appUser.Email</td>
+                        <td>
+                            <input type="password" value="@appUser.Password" class="form-control" readonly/>
+                        </td>
+                        <td></td>
+                        <td></td>
+                    </tr>
+                }
+            }
+        </tbody>
+    </table>
+    <nav aria-label="Page navigation example" style="margin-top: 50px;">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+            @for (int pageCnt = 1; pageCnt <= Model.TotalPages; ++pageCnt)
+            {
+                <li class="page-item">
+                    <a class="page-link" href="/Posts?page=@pageCnt&keyword=@ViewBag.keyword">@pageCnt</a>
+                </li>
+            }
+            @* <li class="page-item"><a class="page-link" href="">1</a></li>
+            <li class="page-item"><a class="page-link" href="">2</a></li>
+            <li class="page-item"><a class="page-link" href="">3</a></li> *@
+            <li class="page-item">
+                <a class="page-link" href="" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

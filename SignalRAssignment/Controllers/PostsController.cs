@@ -117,9 +117,12 @@ namespace SignalRAssignment.Controllers
         }
 
         [HttpDelete("/delete/{id}")]
+        [SessionAuthorize]
         public async Task<IActionResult> Delete([FromRoute] int id)
         {
-            await _serviceFactory.PostService.DeletePost(id);
+            int userId = Convert.ToInt32(HttpContext.Session.GetString("userId"));
+
+            await _serviceFactory.PostService.DeletePost(userId, id);
             return RedirectToAction("Index", "Posts");
         }
 
