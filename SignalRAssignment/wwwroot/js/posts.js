@@ -5,8 +5,8 @@ const connection = new signalR.HubConnectionBuilder()
 
 const baseUrl = `${window.location.protocol}//${window.location.host}`;
 
-const refreshPosts = async (postId) => {
-    console.log(`Post ${postId} was updated.`);
+const refreshPosts = async (postId, userId) => {
+    console.log(`Post ${postId} was updated by userid ${userId}.`);
     let postsTable = document.querySelector(".posts_table_body");
     postsTable.innerHTML = "";
 
@@ -19,7 +19,7 @@ const refreshPosts = async (postId) => {
     }
 
     const data = await response.json();
-    
+
     const posts = data.items;
 
     console.log({ posts });

@@ -23,6 +23,14 @@ namespace SignalRAssignment.Controllers
             _serviceFactory = serviceFactory;
         }
 
+
+        [HttpGet("{id:int}")]
+        public async Task<IActionResult> Details([FromRoute] int id)
+        {
+            var appUser = await _serviceFactory.AppUserService.GetAppUserDetailsById(id);
+            return View("~/Views/AppUsers/Details.cshtml", appUser);
+        }
+
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] QueryPagedAppUsersRequest request)
         {

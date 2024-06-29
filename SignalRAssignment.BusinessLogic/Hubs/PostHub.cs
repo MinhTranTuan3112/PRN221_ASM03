@@ -8,9 +8,9 @@ namespace SignalRAssignment.BusinessLogic.Hubs
 {
     public class PostHub : Hub
     {
-        public async Task NotifyPostUpdate(int postId)
+        public async Task NotifyPostUpdate(int postId, int userId)
         {
-            await Clients.All.SendAsync("ReceivePostUpdate", postId);
+            await Clients.All.SendAsync("ReceivePostUpdate", postId, userId);
         }
 
         public async Task NotifyPostDeleted()

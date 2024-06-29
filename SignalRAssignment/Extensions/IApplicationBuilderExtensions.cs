@@ -24,6 +24,18 @@ namespace SignalRAssignment.Extensions
                 });
             });
 
+            app.MapGet("/api/posts/user/{userId}", async (IPostService _postService, int userId) =>
+            {
+                return await _postService.GetPostsByUserId(userId);
+            });
+
+            app.MapGet("/api/appusers/{id}", async (IAppUserService _appUserService, int id) =>
+            {
+                return await _appUserService.GetAppUserDetailsById(id);
+            });
+
+
+
             return app;
         }
 
