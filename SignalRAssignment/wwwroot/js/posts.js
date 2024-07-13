@@ -10,7 +10,6 @@ const refreshPosts = async (postId, userId) => {
     let postsTable = document.querySelector(".posts_table_body");
     postsTable.innerHTML = "";
 
-
     const response = await fetch(`${baseUrl}/api/posts`);
 
     if (!response.ok) {
@@ -100,10 +99,51 @@ const refreshPosts = async (postId, userId) => {
         </div>`;
 };
 
-connection.on("ReceivePostUpdate", refreshPosts);
+connection.on("ReceivePostUpdate", () => {
+    location.href = '/Posts';
+});
 
-connection.on("ReceivePostDelete", refreshPosts);
+connection.on("ReceivePostCreated",  () => {
+    location.href = '/Posts';
+});
+
+connection.on("ReceivePostDelete",  () => {
+    location.href = '/Posts';
+});
 
 connection.start().catch(function (err) {
     return console.error(err.toString());
 });
+
+let deletePostsBtn = document.querySelectorAll('.delete_post_btn');
+deletePostsBtn.forEach(deleteBtn => deleteBtn.addEventListener('click', async () => {
+    let result = await Swal.fire({
+        title: "Delete this post?",
+        showCancelButton: true,
+        confirmButtonText: "Yes, delete it!",
+        cancelButtonText: `Cancel`
+    });
+
+    if (!result.isConfirmed) {
+        return;
+    }
+
+    let postId = Number(deleteBtn.getAttribute('post_id'));
+    let userId = Number(document.querySelector('.userId').textContent);
+    let url = `${baseUrl}/api/posts/users/${userId}/post/${postId}`;
+
+    console.log(`Deleting post with id ${postId} for user with id ${userId}`);
+    
+    let response = await fetch(url, {
+        method: 'DELETE',
+        headers: {
+            'Content-Type': 'application/json'
+        }
+    });
+
+    if (response.status !== 204) {
+        const message = `An error has occured: ${response.status}`;
+        throw new Error(message);
+    }
+
+}));

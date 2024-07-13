@@ -13,6 +13,11 @@ namespace SignalRAssignment.BusinessLogic.Hubs
             await Clients.All.SendAsync("ReceivePostUpdate", postId, userId);
         }
 
+        public async Task NotifyPostCreated(int postId, int userId)
+        {
+            await Clients.All.SendAsync("ReceivePostCreated", postId, userId);
+        }
+
         public async Task NotifyPostDeleted()
         {
             await Clients.All.SendAsync("ReceivePostDeleted");

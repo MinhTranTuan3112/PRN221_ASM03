@@ -29,10 +29,17 @@ namespace SignalRAssignment.Extensions
                 return await _postService.GetPostsByUserId(userId);
             });
 
+            app.MapDelete("/api/posts/users/{userId}/post/{postId}", async (IPostService _postService, int userId, int postId) =>
+            {
+                await _postService.DeletePost(userId, postId);
+                return Results.NoContent();
+            });
+
             app.MapGet("/api/appusers/{id}", async (IAppUserService _appUserService, int id) =>
             {
                 return await _appUserService.GetAppUserDetailsById(id);
             });
+
 
 
 

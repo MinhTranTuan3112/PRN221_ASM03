@@ -31,6 +31,19 @@ namespace SignalRAssignment.Controllers
             return View("~/Views/AppUsers/Details.cshtml", appUser);
         }
 
+        [HttpPost("update/{id:int}")]
+        public async Task<IActionResult> UpdateAppUser([FromRoute] int id, [FromForm] IFormCollection form)
+        {
+            await _serviceFactory.AppUserService.UpdateAppUser(id, new UpdateAppUserRequest{
+                Fullname = form["fullName"]!,
+                Address = form["Address"],
+                Email = form["Email"]!,
+                Password = form["Password"]!
+            
+            });
+            return RedirectToAction("Details", "AppUsers", new { id = id });
+        }
+
         [HttpGet]
         public async Task<IActionResult> Index([FromQuery] QueryPagedAppUsersRequest request)
         {

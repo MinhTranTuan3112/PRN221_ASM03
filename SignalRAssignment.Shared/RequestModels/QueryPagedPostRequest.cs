@@ -17,6 +17,7 @@ namespace SignalRAssignment.Shared.RequestModels
         [FromQuery(Name = "keyword")]
         public string Keyword { get; set; } = "";
 
-        
+        [FromQuery(Name = "orderByDesc")]
+        public bool OrderByDesc { get; set; } = false;
     }
 }

@@ -7,6 +7,14 @@
     string actionPath = $@"/appUsers?page={pageNumber}&pageSize={pageSize}";
 }
 
+<style>
+    .posts_info_content {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 5rem;
+    }
+</style>
+
 <h1 class="mb-4">@ViewData["Title"]</h1>
 
 <div>
@@ -44,10 +52,11 @@
                         <td>@appUser.Fullname</td>
                         <td>@appUser.Email</td>
                         <td>
-                            <input type="password" value="@appUser.Password" class="form-control" readonly/>
+                            <input type="password" value="@appUser.Password" class="form-control" readonly />
                         </td>
                         <td>
-                            <button class="btn btn-outline-primary" type="button" onclick="location.href='/appusers/@appUser.UserID'">Details</button>
+                            <button class="btn btn-outline-primary" type="button"
+                                onclick="location.href='/appusers/@appUser.UserID'">Details</button>
                         </td>
                         <td>
                             <button class="btn btn-outline-danger" type="button">Delete</button>

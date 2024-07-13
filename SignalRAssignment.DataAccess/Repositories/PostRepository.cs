@@ -42,6 +42,11 @@ namespace SignalRAssignment.DataAccess.Repositories
                         || p.Content.ToLower().Contains(keyword.ToLower()));
             }
 
+            if (request.OrderByDesc == true)
+            {
+                query = query.OrderByDescending(p => p.Title);
+            }
+
             return await query.ToPagedResultModelAsync(request.Page, request.PageSize);
         }
     }

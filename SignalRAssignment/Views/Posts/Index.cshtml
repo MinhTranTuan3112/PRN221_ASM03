@@ -4,6 +4,7 @@
     ViewData["Title"] = "Posts";
     int pageNumber = Model.PageNumber;
     int pageSize = Model.PageSize;
+    var userId = Context.Session.GetString("userId");
 
     string actionPath = $@"/posts?page={pageNumber}&pageSize={pageSize}";
 }
@@ -11,23 +12,7 @@
 <h1>@ViewData["Title"]</h1>
 
 <div>
-    <div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h1 class="modal-title fs-5" id="exampleModalLabel">Delete this post?</h1>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                @* <div class="modal-body">
-                ...
-                </div> *@
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancel</button>
-                    <button type="button" class="btn btn-danger">Delete</button>
-                </div>
-            </div>
-        </div>
-    </div>
+    <div class="userId" hidden>@userId</div>
 
     <svg xmlns="http://www.w3.org/2000/svg" class="d-none">
         <symbol id="check-circle-fill" viewBox="0 0 16 16">
@@ -106,8 +91,7 @@
                                 onclick="location.href='/Posts/@post.PostID'">Details</button>
                         </td>
                         <td>
-                            <button class="btn btn-danger" type="button" data-bs-toggle="modal"
-                                data-bs-target="#exampleModal">Delete</button>
+                            <button post_id="@post.PostID" class="btn btn-danger delete_post_btn" type="button">Delete</button>
                         </td>
                     </tr>
                 }

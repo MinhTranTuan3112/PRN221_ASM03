@@ -37,7 +37,7 @@ namespace SignalRAssignment.BusinessLogic.Services
             await _unitOfWork.SaveChangesAsync();
 
             //Notify the client
-            await _postHubContext.Clients.All.SendAsync("ReceivePostUpdate", post.PostID, post.AuthorID);
+            await _postHubContext.Clients.All.SendAsync("ReceivePostCreated", post.PostID, post.AuthorID);
 
             return post.PostID;
         }
@@ -108,7 +108,7 @@ namespace SignalRAssignment.BusinessLogic.Services
             {
                 throw new NotFoundException("User not found");
             }
-            
+
             var posts = await _unitOfWork.PostRepository.FindAsync(p => p.AuthorID == appUserId);
 
             return posts.Adapt<List<PostModel>>();
